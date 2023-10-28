@@ -175,7 +175,7 @@ public class Library implements ActionListener {
 //        int cost = Integer.parseInt(st3);
 //        Book book = new Book(title, author, year, 0, count, cost);
 //        this.items.add(book);
-        JOptionPane.showMessageDialog(x, "Book Added Successfully");
+        JOptionPane.showMessageDialog(x, "Book Added Successfully!");
     }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -312,17 +312,30 @@ public class Library implements ActionListener {
 
     //-----------------------------------------------------------------------------------------------------------------------------------------
     public void viewBorrowersList() {
-//        boolean flag = false;
-//        for (int i = 0; i < this.items.size(); i++) {
-//            if (this.items.get(i).borrower != null) {
-//                flag = true;
-//                System.out.print(this.items.get(i).title);
-//                this.items.get(i).borrower.displayInfo();
-//            }
-//        }
-//        if (!flag) {
-//            System.out.println("Borrowers List Empty !");
-//        }
+        boolean flag = false;
+        x = new JFrame();
+        x.setVisible(true);
+        x.setSize(400, 400);
+        int rows = this.items.size(), cols = 4;
+        System.out.println("rows: " + rows + ", cols: " + cols);
+        String[][] data = new String[rows][cols];
+        for (int i = 0, j = 0; i < this.items.size(); i++) {
+            if (this.items.get(i).borrower != null) {
+                data[j][0] = String.valueOf(this.items.get(i).id);
+                data[j][1] = this.items.get(i).title;
+                data[j][2] = this.items.get(i).borrower.fullName;
+                data[j][3] = this.items.get(i).borrower.phoneNumber;
+                j++;
+                flag = true;
+            }
+        }
+        String []headings  = {"Book ID","Book Title", "Borrower Name", "Borrower Contact"};
+        JTable allBorrowers = new JTable(data, headings);
+        JScrollPane sp = new JScrollPane(allBorrowers);
+        x.add(sp);
+        if(!flag){
+            JOptionPane.showMessageDialog(x, "Borrower List Empty!");
+        }
     }
 
     //------------------------------------------------------------------------------------------------------------------------------------------
