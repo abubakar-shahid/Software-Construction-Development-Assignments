@@ -220,23 +220,35 @@ public class Library implements ActionListener {
 //------------------------------------------------------------------------------------------------------------------------------------------
 
     public void deleteItem() {
-//        int id;
-//        boolean flag = false;
-//        System.out.print("Enter Book ID: ");
-//        id = input.nextInt();
-//        for (int i = 0; i < this.items.size(); i++) {
-//            if (this.items.get(i).id == id) {
-//                this.items.remove(i);
-//                flag = true;
-//                break;
-//            }
-//        }
-//        if (flag) {
-//            System.out.println("Book Deleted Successfully");
-//        } else {
-//            System.out.println("Item NOT Found !!!");
-//        }
-//        input.nextLine();
+        x = new JFrame();
+        x.setVisible(true);
+        x.setSize(500, 400);
+        jp = new JPanel();
+        jp.setLayout(new FlowLayout());
+        jl = new JLabel("Enter Book ID: ");
+        jtf = new JTextField(10);
+        jb = new JButton("Delete Item");
+        jb.addActionListener(this);
+        jp.add(jl);
+        jp.add(jtf);
+        jp.add(jb);
+        x.add(jp);
+    }
+
+    public void delete() {
+        boolean flag = false;
+        for (int i = 0; i < this.items.size(); i++) {
+            if (this.items.get(i).id == Integer.parseInt(jtf.getText())) {
+                this.items.remove(i);
+                flag = true;
+                break;
+            }
+        }
+        if (flag) {
+            JOptionPane.showMessageDialog(x, "Book Deleted Successfully!");
+        } else {
+            JOptionPane.showMessageDialog(x, "Book NOT Found!", "Error", JOptionPane.WARNING_MESSAGE);
+        }
     }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -329,11 +341,11 @@ public class Library implements ActionListener {
                 flag = true;
             }
         }
-        String []headings  = {"Book ID","Book Title", "Borrower Name", "Borrower Contact"};
+        String[] headings = {"Book ID", "Book Title", "Borrower Name", "Borrower Contact"};
         JTable allBorrowers = new JTable(data, headings);
         JScrollPane sp = new JScrollPane(allBorrowers);
         x.add(sp);
-        if(!flag){
+        if (!flag) {
             JOptionPane.showMessageDialog(x, "Borrower List Empty!");
         }
     }
@@ -345,6 +357,8 @@ public class Library implements ActionListener {
             view();
         } else if (e.getActionCommand() == "Add Item") {
             add();
+        } else if (e.getActionCommand() == "Delete Item") {
+            delete();
         }
     }
 
