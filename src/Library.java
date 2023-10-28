@@ -37,32 +37,59 @@ public class Library implements ActionListener {
 //------------------------------------------------------------------------------------------------------------------------------------------
 
     public void viewHotPicks() {
-//        int size = this.items.size();
-//        int[] indexes = new int[size];
-//        int[] counts = new int[size];
-//        for (int i = 0; i < size; i++) {
-//            indexes[i] = this.items.get(i).id - 1;
-//            counts[i] = this.items.get(i).popularityCount;
-//        }
-//
-//        for (int i = 0; i < size; i++) {
-//            for (int j = i + 1; j < size; j++) {
-//                int temp1, temp2;
-//                if (counts[j] < counts[i]) {
-//                    temp1 = indexes[i];
-//                    temp2 = counts[i];
-//                    indexes[i] = indexes[j];
-//                    counts[i] = counts[j];
-//                    indexes[j] = temp1;
-//                    counts[j] = temp2;
-//                }
-//            }
-//        }
-//
-//        for (int i = 0; i < size; i++) {
-//            this.items.get(indexes[i]).displayInfo(jp, columnNames);
-//        }
+        int size = this.items.size();
+        int[] indexes = new int[size];
+        int[] counts = new int[size];
+        for (int i = 0; i < size; i++) {
+            indexes[i] = this.items.get(i).id - 1;
+            counts[i] = this.items.get(i).popularityCount;
+        }
 
+        for (int i = 0; i < size; i++) {
+            for (int j = i + 1; j < size; j++) {
+                int temp1, temp2;
+                if (counts[j] < counts[i]) {
+                    temp1 = indexes[i];
+                    temp2 = counts[i];
+                    indexes[i] = indexes[j];
+                    counts[i] = counts[j];
+                    indexes[j] = temp1;
+                    counts[j] = temp2;
+                }
+            }
+        }
+        x = new JFrame("Hot Picks!");
+        x.setVisible(true);
+        x.setSize(500, 400);
+        x.setLayout(new GridLayout(2, 1));
+        jp = new JPanel(new FlowLayout());
+        model = new DefaultTableModel();
+        model.setColumnIdentifiers(columnNames);
+        table = new JTable(model);
+        sp = new JScrollPane(table);
+        jp.add(sp);
+        x.add(jp);
+        int rows = this.items.size();
+        for (int i = 0, j = 0; i < rows; i++) {
+            Object[] data = {
+                    String.valueOf(this.items.get(indexes[i]).id),
+                    this.items.get(indexes[i]).title,
+                    this.items.get(indexes[i]).author,
+                    String.valueOf(this.items.get(indexes[i]).year),
+                    String.valueOf(this.items.get(indexes[i]).popularityCount),
+                    String.valueOf(this.items.get(indexes[i]).cost)
+            };
+            model.addRow(data);
+        }
+        jb = new JButton("View Chart");
+        jb.addActionListener(this::actionPerformed);
+        JPanel jp2 = new JPanel(new FlowLayout());
+        jp2.add(jb);
+        x.add(jp2);
+    }
+
+    public void viewGraph() {
+        JOptionPane.showMessageDialog(x, "Will be Printing Chart Soon :)");
     }
 
     //------------------------------------------------------------------------------------------------------------------------------------------
@@ -394,14 +421,12 @@ public class Library implements ActionListener {
     //------------------------------------------------------------------------------------------------------------------------------------------
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand() == "Show Item") {
-            view();
-        } else if (e.getActionCommand() == "Add Item") {
-            add();
-        } else if (e.getActionCommand() == "Delete Item") {
-            delete();
-        } else if (e.getActionCommand() == "Borrow") {
-            borrow();
+        switch (e.getActionCommand()) {
+            case "Show Item" -> view();
+            case "Add Item" -> add();
+            case "Delete Item" -> delete();
+            case "Borrow" -> borrow();
+            case "View Chart" -> viewGraph();
         }
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
