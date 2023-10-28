@@ -64,52 +64,94 @@ public class Library implements ActionListener {
 //        }
 
     }
-//------------------------------------------------------------------------------------------------------------------------------------------
+
+    //------------------------------------------------------------------------------------------------------------------------------------------
+    JTextField text1 = new JTextField(5);
+    JTextField text2 = new JTextField(20);
+    JTextField text3 = new JTextField(15);
 
     public void borrowItem() {
-//        System.out.println("Following Books are currently available:-");
-//        for (int i = 0; i < this.items.size(); i++) {
-//            if (this.items.get(i).borrower == null) {
-//                //this.items.get(i).displayInfo(jp, columnNames);
-//            }
-//        }
-//        int index = 0, id;
-//        boolean flag = false;
-//        System.out.print("Enter Book ID: ");
-//        id = input.nextInt();
-//        for (int i = 0; i < this.items.size(); i++) {
-//            if (this.items.get(i).id == id) {
-//                index = i;
-//                flag = true;
-//                break;
-//            }
-//        }
-//        if (flag) {
-//            if (this.items.get(index).borrower == null) {
-//                input.nextLine();
-//                String name, number;
-//                System.out.print("Enter your Full Name: ");
-//                name = input.nextLine();
-//                System.out.print("Enter your Phone Number: ");
-//                number = input.nextLine();
-//                double totalCost = this.items.get(index).calculateCost();
-//                Borrower b1 = new Borrower(name, number, totalCost);
-//                if (this.items.get(index).checkBorrower(b1)) {
-//                    System.out.println("You have already Borrowed this item previously !!! You cannot borrow it again !!!");
-//                } else {
-//                    this.items.get(index).borrower = b1;
-//                    this.items.get(index).borrowersList.add(b1);
-//                    System.out.println("Book Borrowed Successfully !!!");
-//                    System.out.println("Your Total Cost is: Rs." + totalCost + "/-");
-//                }
-//            } else {
-//                System.out.println("This Book is already borrowed !!!");
-//            }
-//
-//        } else {
-//            System.out.println("Item NOT Found !!!");
-//        }
-//        input.nextLine();
+        x = new JFrame();
+        x.setVisible(true);
+        x.setSize(500, 400);
+        x.setLayout(new GridLayout(2, 1));
+        jp = new JPanel(new FlowLayout());
+        jl = new JLabel("          Following Books are currently available: ");
+        jp.add(jl);
+        model = new DefaultTableModel();
+        model.setColumnIdentifiers(columnNames);
+        table = new JTable(model);
+        sp = new JScrollPane(table);
+        jp.add(sp);
+        x.add(jp);
+        int rows = this.items.size();
+        for (int i = 0, j = 0; i < rows; i++) {
+            if (this.items.get(i).borrower == null) {
+                Object[] data = {
+                        String.valueOf(this.items.get(i).id),
+                        this.items.get(i).title,
+                        this.items.get(i).author,
+                        String.valueOf(this.items.get(i).year),
+                        String.valueOf(this.items.get(i).popularityCount),
+                        String.valueOf(this.items.get(i).cost)
+                };
+                model.addRow(data);
+            }
+        }
+        JLabel l1 = new JLabel("Enter Book ID: ");
+        JLabel l2 = new JLabel("Your Full Name: ");
+        JLabel l3 = new JLabel("Phone Number: ");
+        JButton enter = new JButton("Borrow");
+        enter.addActionListener(this::actionPerformed);
+        JPanel p1 = new JPanel(new FlowLayout());
+        JPanel p2 = new JPanel(new FlowLayout());
+        JPanel p3 = new JPanel(new FlowLayout());
+        JPanel p4 = new JPanel(new FlowLayout());
+        p1.add(l1);
+        p1.add(text1);
+        p2.add(l2);
+        p2.add(text2);
+        p3.add(l3);
+        p3.add(text3);
+        p4.add(enter);
+        JPanel jp2 = new JPanel(new GridLayout(4, 1));
+        jp2.add(p1);
+        jp2.add(p2);
+        jp2.add(p3);
+        jp2.add(p4);
+        x.add(jp2);
+    }
+
+    public void borrow() {
+        boolean flag = false;
+        int index = 0;
+        int id = Integer.parseInt(text1.getText());
+        for (int i = 0; i < this.items.size(); i++) {
+            if (this.items.get(i).id == id) {
+                index = i;
+                flag = true;
+                break;
+            }
+        }
+        if (flag) {
+            if (this.items.get(index).borrower == null) {
+                String name = text2.getText();
+                String number = text3.getText();
+                double totalCost = this.items.get(index).calculateCost();
+                Borrower b1 = new Borrower(name, number, totalCost);
+                this.items.get(index).borrower = b1;
+                JOptionPane.showMessageDialog(x, "Book Borrowed Successfully!\n" +
+                        "Your Total Cost is: Rs. " + totalCost + "/-");
+                text1.setText("");
+                text2.setText("");
+                text3.setText("");
+                x.setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(x, "This Book is Already Borrowed!", "Error", JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(x, "Book NOT Found!", "Error", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     //------------------------------------------------------------------------------------------------------------------------------------------
@@ -329,7 +371,6 @@ public class Library implements ActionListener {
         x.setVisible(true);
         x.setSize(400, 400);
         int rows = this.items.size(), cols = 4;
-        System.out.println("rows: " + rows + ", cols: " + cols);
         String[][] data = new String[rows][cols];
         for (int i = 0, j = 0; i < this.items.size(); i++) {
             if (this.items.get(i).borrower != null) {
@@ -359,9 +400,9 @@ public class Library implements ActionListener {
             add();
         } else if (e.getActionCommand() == "Delete Item") {
             delete();
+        } else if (e.getActionCommand() == "Borrow") {
+            borrow();
         }
     }
-
     //----------------------------------------------------------------------------------------------------------------------------------------
-
 }

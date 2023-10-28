@@ -79,7 +79,7 @@ public class GUI extends JFrame implements ActionListener {
         String option = e.getActionCommand();
         switch (option) {
             case "Hot Picks!" -> System.out.println("1");
-            case "Borrow Book" -> System.out.println("2");
+            case "Borrow Book" -> this.library.borrowItem();
             case "View Book by ID" -> this.library.viewItemByID();
             case "View All Books" -> this.library.viewAllItems();
             case "Add New Book" -> this.library.addItem();

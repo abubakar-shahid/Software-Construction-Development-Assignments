@@ -10,7 +10,6 @@ public class Book {
     protected Borrower borrower;
     protected int popularityCount;
     protected int cost;
-    protected List<Borrower> borrowersList;
     protected String author;
     protected int year;
 
@@ -28,11 +27,10 @@ public class Book {
         this.popularityCount = count;
         this.borrower = null;
         this.cost = cost;
-        this.borrowersList = new ArrayList<>();
     }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-    public void displayInfo(JFrame x, JPanel jp, String[] columnNames) {
+//    public void displayInfo(JFrame x, JPanel jp, String[] columnNames) {
 //        String [][]data = new String[1][6];
 //        data[0][0] = String.valueOf(this.id);
 //        data[0][1] = this.title;
@@ -45,7 +43,7 @@ public class Book {
 //        x.add(sp);
 //        jp.add(book);
 //        x.add(jp);
-    }
+//    }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
     public double calculateCost() {
@@ -53,16 +51,16 @@ public class Book {
     }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-    public boolean checkBorrower(Borrower b) {
-        boolean flag = true;
-        for (Iterator<Borrower> it = this.borrowersList.iterator(); it.hasNext();) {
-            if (this.borrowersList.get(id).checkBorrower(b)) {
-                flag = false;
-                break;
-            }
-        }
-        return flag;
-    }
+//    public boolean checkBorrower(Borrower b) {
+//        boolean flag = true;
+//        for (Iterator<Borrower> it = this.borrowersList.iterator(); it.hasNext();) {
+//            if (this.borrowersList.get(id).checkBorrower(b)) {
+//                flag = false;
+//                break;
+//            }
+//        }
+//        return flag;
+//    }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
     public String getData() {

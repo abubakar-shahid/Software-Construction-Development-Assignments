@@ -12,16 +12,16 @@ public class Borrower {
     }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-    public void displayInfo() {
-        System.out.print(", Borrowed by: " + fullName);
-        System.out.println(" (" + phoneNumber + ")");
-    }
+//    public void displayInfo() {
+//        System.out.print(", Borrowed by: " + fullName);
+//        System.out.println(" (" + phoneNumber + ")");
+//    }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-    public boolean checkBorrower(Borrower b) {
-        return (b.fullName == null ? this.fullName == null : b.fullName.equals(this.fullName))
-                && (b.phoneNumber == null ? this.phoneNumber == null : b.phoneNumber.equals(this.phoneNumber))
-                && b.totalBill == this.totalBill;
-    }
+//    public boolean checkBorrower(Borrower b) {
+//        return (b.fullName == null ? this.fullName == null : b.fullName.equals(this.fullName))
+//                && (b.phoneNumber == null ? this.phoneNumber == null : b.phoneNumber.equals(this.phoneNumber))
+//                && b.totalBill == this.totalBill;
+//    }
 //------------------------------------------------------------------------------------------------------------------------------------------
 }
