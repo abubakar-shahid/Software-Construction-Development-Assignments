@@ -1,14 +1,21 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.*;
+import java.util.List;
 
-public class Library {
+public class Library implements ActionListener {
 
     public List<Book> items;
+    String[] columnNames;
 
     Scanner input = new Scanner(System.in);
 //------------------------------------------------------------------------------------------------------------------------------------------
 
     public Library() {
         this.items = new ArrayList<>();
+        columnNames = new String[]{"ID", "Title", "Author", "Year of Publication", "Popularity Count", "Cost"};
     }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -172,30 +179,40 @@ public class Library {
 //------------------------------------------------------------------------------------------------------------------------------------------
 
     public void viewAllItems() {
-        for (int i = 0; i < this.items.size(); i++) {
-            this.items.get(i).displayInfo();
+        JFrame x = new JFrame();
+        x.setVisible(true);
+        x.setSize(400, 400);
+        int rows = this.items.size(), cols = 6;
+        String[][] data = new String[rows][cols];
+        for (int i = 0; i < rows; i++) {
+            data[i][0] = String.valueOf(this.items.get(i).id);
+            data[i][1] = this.items.get(i).title;
+            data[i][2] = this.items.get(i).author;
+            data[i][3] = String.valueOf(this.items.get(i).year);
+            data[i][4] = String.valueOf(this.items.get(i).popularityCount);
+            data[i][5] = String.valueOf(this.items.get(i).cost);
         }
+        JTable allBooks = new JTable(data, columnNames);
+        JScrollPane sp = new JScrollPane(allBooks);
+        x.add(sp);
     }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
     public void viewItemByID() {
-        int index = 0, id;
-        boolean flag = false;
-        System.out.print("Enter Book ID: ");
-        id = input.nextInt();
-        for (int i = 0; i < this.items.size(); i++) {
-            if (this.items.get(i).id == id) {
-                index = i;
-                flag = true;
-                break;
-            }
-        }
-        if (flag) {
-            this.items.get(index).displayInfo();
-        } else {
-            System.out.println("Item NOT Found !!!");
-        }
-        input.nextLine();
+        JFrame x = new JFrame();
+
+        x.setVisible(true);
+        x.setSize(400, 400);
+        JPanel jp = new JPanel();
+        jp.setLayout(new FlowLayout());
+        JLabel title = new JLabel("Enter Book ID: ");
+        JTextField text = new JTextField(10);
+        JButton enter = new JButton("Show Item");
+        enter.addActionListener(this);
+        jp.add(title);
+        jp.add(text);
+        jp.add(enter);
+        x.add(jp);
     }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -210,6 +227,25 @@ public class Library {
         }
         if (!flag) {
             System.out.println("Borrowers List Empty !");
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------------------------------
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        int index = 0, id = 0;
+        boolean flag = false;
+        for (int i = 0; i < this.items.size(); i++) {
+            if (this.items.get(i).id == id) {
+                index = i;
+                flag = true;
+                break;
+            }
+        }
+        if (flag) {
+            this.items.get(index).displayInfo();
+        } else {
+            System.out.println("Item NOT Found !!!");
         }
     }
 //------------------------------------------------------------------------------------------------------------------------------------------
