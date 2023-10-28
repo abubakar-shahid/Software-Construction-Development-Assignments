@@ -83,7 +83,7 @@ public class GUI extends JFrame implements ActionListener {
             case "View Book by ID" -> this.library.viewItemByID();
             case "View All Books" -> this.library.viewAllItems();
             case "Add New Book" -> this.library.addItem();
-            case "Edit Book" -> System.out.println("6");
+            case "Edit Book" -> this.library.editItem();
             case "Delete Book" -> this.library.deleteItem();
             case "View Borrower's List" -> this.library.viewBorrowersList();
             default -> this.writeFile(library);

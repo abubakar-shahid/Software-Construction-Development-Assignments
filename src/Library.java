@@ -98,7 +98,7 @@ public class Library implements ActionListener {
     JTextField text3 = new JTextField(15);
 
     public void borrowItem() {
-        x = new JFrame();
+        x = new JFrame("Borrow Book");
         x.setVisible(true);
         x.setSize(500, 400);
         x.setLayout(new GridLayout(2, 1));
@@ -182,14 +182,14 @@ public class Library implements ActionListener {
     }
 
     //------------------------------------------------------------------------------------------------------------------------------------------
-    JTextField t1 = new JTextField(20);
-    JTextField t2 = new JTextField(20);
-    JTextField t3 = new JTextField(5);
-    JTextField t4 = new JTextField(5);
-    JTextField t5 = new JTextField(5);
+    JTextField t1;
+    JTextField t2;
+    JTextField t3;
+    JTextField t4;
+    JTextField t5;
 
     public void addItem() {
-        x = new JFrame();
+        x = new JFrame("Add Book");
         x.setSize(400, 400);
         x.setVisible(true);
         jp = new JPanel();
@@ -199,11 +199,11 @@ public class Library implements ActionListener {
         JLabel l3 = new JLabel("Year of Publication: ");
         JLabel l4 = new JLabel("Popularity Count: ");
         JLabel l5 = new JLabel("Cost: ");
-        JTextField t1 = new JTextField(20);
-        JTextField t2 = new JTextField(20);
-        JTextField t3 = new JTextField(10);
-        JTextField t4 = new JTextField(10);
-        JTextField t5 = new JTextField(10);
+        t1 = new JTextField(20);
+        t2 = new JTextField(20);
+        t3 = new JTextField(5);
+        t4 = new JTextField(5);
+        t5 = new JTextField(5);
         JPanel p1 = new JPanel(new FlowLayout());
         p1.add(l1);
         p1.add(t1);
@@ -235,79 +235,159 @@ public class Library implements ActionListener {
     public void add() {
         String title = t1.getText();
         String author = t2.getText();
-        String st1 = t3.getText();
-        String st2 = t4.getText();
-        String st3 = t5.getText();
-        System.out.println(st1 + "," + st2 + "," + st3);
-//        int year = Integer.parseInt(st1);
-//        int count = Integer.parseInt(st2);
-//        int cost = Integer.parseInt(st3);
-//        Book book = new Book(title, author, year, 0, count, cost);
-//        this.items.add(book);
+        int year = Integer.parseInt(t3.getText());
+        int count = Integer.parseInt(t4.getText());
+        int cost = Integer.parseInt(t5.getText());
+        Book book = new Book(title, author, year, 0, count, cost);
+        this.items.add(book);
         JOptionPane.showMessageDialog(x, "Book Added Successfully!");
+        t1.setText("");
+        t2.setText("");
+        t3.setText("");
+        t4.setText("");
+        t5.setText("");
     }
-//------------------------------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------------------------
+
+    JTextField t6;
+    int index;
 
     public void editItem() {
-//        int index = 0, id;
-//        boolean flag = false;
-//        System.out.print("Enter Book ID: ");
-//        id = input.nextInt();
-//        for (int i = 0; i < this.items.size(); i++) {
-//            if (this.items.get(i).id == id) {
-//                index = i;
-//                id = this.items.get(index).id;
-//                flag = true;
-//                break;
-//            }
-//        }
-//        if (flag && this.items.get(index).type == 1) {
-//            System.out.println("type: " + this.items.get(index).type);
-//            input.nextLine();
-//            System.out.println("Book Found !     Enter new Details:-");
-//            String title, author;
-//            int year, count, cost;
-//            System.out.print("Enter Title of the Book: ");
-//            title = input.nextLine();
-//            System.out.print("Enter Author of the Book: ");
-//            author = input.nextLine();
-//            System.out.print("Enter Year of Publication: ");
-//            year = input.nextInt();
-//            System.out.print("Enter Popularity Count: ");
-//            count = input.nextInt();
-//            System.out.print("Enter Cost of the Book: ");
-//            cost = input.nextInt();
-//
-//            Book book = new Book(title, author, year, id, count, cost);
-//            this.items.remove(index);
-//            this.items.add(index, book);
-//            System.out.println("Book Edited Successfully");
-//        } else {
-//            System.out.println("Item NOT Found !!!");
-//        }
+        x = new JFrame("Edit Book");
+        x.setSize(400, 400);
+        x.setVisible(true);
+        jp = new JPanel();
+        jp.setLayout(new GridLayout(7, 1));
+        JLabel l1 = new JLabel("Title: ");
+        JLabel l2 = new JLabel("Author: ");
+        JLabel l3 = new JLabel("Year of Publication: ");
+        JLabel l4 = new JLabel("Popularity Count: ");
+        JLabel l5 = new JLabel("Cost: ");
+        JLabel l6 = new JLabel("Book Id: ");
+        t1 = new JTextField(20);
+        t2 = new JTextField(20);
+        t3 = new JTextField(10);
+        t4 = new JTextField(10);
+        t5 = new JTextField(10);
+        t6 = new JTextField(5);
+        JPanel p7 = new JPanel(new FlowLayout());
+        p7.add(l6);
+        p7.add(t6);
+        JPanel p1 = new JPanel(new FlowLayout());
+        p1.add(l1);
+        p1.add(t1);
+        JPanel p2 = new JPanel(new FlowLayout());
+        p2.add(l2);
+        p2.add(t2);
+        JPanel p3 = new JPanel(new FlowLayout());
+        p3.add(l3);
+        p3.add(t3);
+        JPanel p4 = new JPanel(new FlowLayout());
+        p4.add(l4);
+        p4.add(t4);
+        JPanel p5 = new JPanel(new FlowLayout());
+        p5.add(l5);
+        p5.add(t5);
+        JPanel p6 = new JPanel(new FlowLayout());
+        JButton enter = new JButton("Enter");
+        JButton confirm = new JButton("Confirm");
+        enter.addActionListener(this::actionPerformed);
+        confirm.addActionListener(this::actionPerformed);
+        p7.add(enter);
+        p6.add(confirm);
+        jp.add(p7);
+        jp.add(p1);
+        jp.add(p2);
+        jp.add(p3);
+        jp.add(p4);
+        jp.add(p5);
+        jp.add(p6);
+        x.add(jp);
+    }
+
+    public void enter() {
+        int id = Integer.parseInt(t6.getText());
+        boolean flag = false;
+        for (int i = 0; i < this.items.size(); i++) {
+            if (this.items.get(i).id == id) {
+                index = i;
+                id = this.items.get(index).id;
+                flag = true;
+                break;
+            }
+        }
+        if (flag) {
+            t1.setText(this.items.get(index).title);
+            t2.setText(this.items.get(index).author);
+            t3.setText(String.valueOf(this.items.get(index).year));
+            t4.setText(String.valueOf(this.items.get(index).popularityCount));
+            t5.setText(String.valueOf(this.items.get(index).cost));
+        } else {
+            JOptionPane.showMessageDialog(x, "Book NOT Found!", "Error", JOptionPane.WARNING_MESSAGE);
+            t6.setText("");
+        }
+    }
+
+    public void save() {
+        this.items.get(index).title = t1.getText();
+        this.items.get(index).author = t2.getText();
+        this.items.get(index).year = Integer.parseInt(t3.getText());
+        this.items.get(index).popularityCount = Integer.parseInt(t4.getText());
+        this.items.get(index).cost = Integer.parseInt(t5.getText());
+        JOptionPane.showMessageDialog(x, "Book Edited Successfully!");
+        t1.setText("");
+        t2.setText("");
+        t3.setText("");
+        t4.setText("");
+        t5.setText("");
+        t6.setText("");
     }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
     public void deleteItem() {
-        x = new JFrame();
+        x = new JFrame("Delete Book");
         x.setVisible(true);
         x.setSize(500, 400);
+        x.setLayout(new GridLayout(2,1));
         jp = new JPanel();
         jp.setLayout(new FlowLayout());
+        model = new DefaultTableModel();
+        model.setColumnIdentifiers(columnNames);
+        table = new JTable(model);
+        sp = new JScrollPane(table);
+        jp.add(sp);
         jl = new JLabel("Enter Book ID: ");
         jtf = new JTextField(10);
         jb = new JButton("Delete Item");
         jb.addActionListener(this);
-        jp.add(jl);
-        jp.add(jtf);
-        jp.add(jb);
+        JPanel jp2 = new JPanel(new FlowLayout());
+        jp2.add(jl);
+        jp2.add(jtf);
+        jp2.add(jb);
         x.add(jp);
+        x.add(jp2);
+        int rows = this.items.size();
+        for (int i = 0, j = 0; i < rows; i++) {
+            if (this.items.get(i).borrower == null) {
+                Object[] data = {
+                        String.valueOf(this.items.get(i).id),
+                        this.items.get(i).title,
+                        this.items.get(i).author,
+                        String.valueOf(this.items.get(i).year),
+                        String.valueOf(this.items.get(i).popularityCount),
+                        String.valueOf(this.items.get(i).cost)
+                };
+                model.addRow(data);
+            }
+        }
     }
 
     public void delete() {
+        int index = 0;
         boolean flag = false;
         for (int i = 0; i < this.items.size(); i++) {
             if (this.items.get(i).id == Integer.parseInt(jtf.getText())) {
+                index = i;
                 this.items.remove(i);
                 flag = true;
                 break;
@@ -315,14 +395,16 @@ public class Library implements ActionListener {
         }
         if (flag) {
             JOptionPane.showMessageDialog(x, "Book Deleted Successfully!");
+            model.removeRow(index);
         } else {
             JOptionPane.showMessageDialog(x, "Book NOT Found!", "Error", JOptionPane.WARNING_MESSAGE);
         }
+        jtf.setText("");
     }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
     public void viewAllItems() {
-        x = new JFrame();
+        x = new JFrame("All Books");
         x.setVisible(true);
         x.setSize(400, 400);
         int rows = this.items.size(), cols = 6;
@@ -342,7 +424,7 @@ public class Library implements ActionListener {
 //------------------------------------------------------------------------------------------------------------------------------------------
 
     public void viewItemByID() {
-        x = new JFrame();
+        x = new JFrame("View Book by ID");
         x.setVisible(true);
         x.setSize(500, 400);
         jp = new JPanel();
@@ -388,13 +470,14 @@ public class Library implements ActionListener {
             model.addRow(data);
         } else {
             JOptionPane.showMessageDialog(x, "Book NOT Found!", "Error", JOptionPane.WARNING_MESSAGE);
+            jtf.setText("");
         }
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------------------
     public void viewBorrowersList() {
         boolean flag = false;
-        x = new JFrame();
+        x = new JFrame("Borrowers List");
         x.setVisible(true);
         x.setSize(400, 400);
         int rows = this.items.size(), cols = 4;
@@ -427,6 +510,8 @@ public class Library implements ActionListener {
             case "Delete Item" -> delete();
             case "Borrow" -> borrow();
             case "View Chart" -> viewGraph();
+            case "Enter" -> enter();
+            case "Confirm" -> save();
         }
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
