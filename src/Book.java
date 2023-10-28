@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.*;
 
 public class Book {
@@ -31,8 +32,19 @@ public class Book {
     }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-    public void displayInfo() {
-        System.out.println("ID: " + this.id + ", Title: '" + this.title + "' by " + this.author + "(" + this.year + ") " + this.popularityCount);
+    public void displayInfo(JFrame x, JPanel jp, String[] columnNames) {
+//        String [][]data = new String[1][6];
+//        data[0][0] = String.valueOf(this.id);
+//        data[0][1] = this.title;
+//        data[0][2] = this.author;
+//        data[0][3] = String.valueOf(this.year);
+//        data[0][4] = String.valueOf(this.popularityCount);
+//        data[0][5] = String.valueOf(this.cost);
+//        JTable book = new JTable(data, columnNames);
+//        JScrollPane sp = new JScrollPane(book);
+//        x.add(sp);
+//        jp.add(book);
+//        x.add(jp);
     }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
