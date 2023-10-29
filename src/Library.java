@@ -473,30 +473,82 @@ public class Library implements ActionListener {
         x.add(sp);
         int rows = this.items.size();
         for (int i = 0; i < rows; i++) {
-            //JButton b = new JButton("read");
             Object[] data = {
                     String.valueOf(this.items.get(i).id),
                     this.items.get(i).title,
                     this.items.get(i).author,
                     String.valueOf(this.items.get(i).year),
                     String.valueOf(this.items.get(i).popularityCount),
-                    String.valueOf(this.items.get(i).cost),
-                    //createButton()
+                    String.valueOf(this.items.get(i).cost)
             };
             model.addRow(data);
-            model.setValueAt(createButton(), i, 6);
+            model.setValueAt(createButton(i), i, 6);
         }
     }
 
-    private static JButton createButton() {
+    private JButton createButton(int i) {
         JButton button = new JButton("Read");
+        String st = this.getContent(i);
+        String name = this.items.get(i).title;
+        final JFrame[] showContent = new JFrame[1];
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //Code to to with Button
+                showContent[0] = new JFrame(name);
+                showContent[0].setVisible(true);
+                showContent[0].setSize(400, 400);
+                showContent[0].addWindowListener(new MyListener());
+                showContent[0].setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                JPanel content = new JPanel(new BorderLayout());
+                JTextArea ta = new JTextArea();
+                ta.setWrapStyleWord(true);
+                ta.setLineWrap(true);
+                ta.setText(st);
+                ta.setEditable(false);
+                JScrollPane scrollPane = new JScrollPane(ta);
+                content.add(scrollPane, BorderLayout.CENTER);
+                showContent[0].add(content);
+            }
+
+            class MyListener implements WindowListener {
+                @Override
+                public void windowOpened(WindowEvent e) {
+                }
+
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    int choice = JOptionPane.showConfirmDialog(null, "Do you want to exit reading the book?", "Close Reading", JOptionPane.YES_NO_OPTION);
+                    if (choice == JOptionPane.YES_OPTION) {
+                        showContent[0].setVisible(false);
+                    }
+                }
+
+                @Override
+                public void windowClosed(WindowEvent e) {
+                }
+
+                @Override
+                public void windowIconified(WindowEvent e) {
+                }
+
+                @Override
+                public void windowDeiconified(WindowEvent e) {
+                }
+
+                @Override
+                public void windowActivated(WindowEvent e) {
+                }
+
+                @Override
+                public void windowDeactivated(WindowEvent e) {
+                }
             }
         });
         return button;
+    }
+
+    public String getContent(int i) {
+        return this.items.get(i).content;
     }
 //------------------------------------------------------------------------------------------------------------------------------------------
 

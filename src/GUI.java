@@ -1,13 +1,9 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.*;
 import java.util.ArrayList;
 
@@ -66,14 +62,16 @@ public class GUI extends JFrame implements ActionListener {
 
         //finishing
         setSize(400, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addWindowListener(new MyWindowListener());
+        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setVisible(true);
 
         //data handling
         readFile(library);
-        //writeFile(library);
     }
 
+    //---------------------------------------------------------------------------------------------------------
     @Override
     public void actionPerformed(ActionEvent e) {
         String option = e.getActionCommand();
@@ -87,6 +85,42 @@ public class GUI extends JFrame implements ActionListener {
             case "Delete Book" -> this.library.deleteItem();
             case "View Borrower's List" -> this.library.viewBorrowersList();
             default -> this.writeFile(library);
+        }
+    }
+
+    //---------------------------------------------------------------------------------------------------------
+    class MyWindowListener implements WindowListener {
+        @Override
+        public void windowOpened(WindowEvent e) {
+        }
+
+        @Override
+        public void windowClosing(WindowEvent e) {
+            int choice = JOptionPane.showConfirmDialog(null, "Do you want to close this window?", "Confirm Close", JOptionPane.YES_NO_OPTION);
+            if (choice == JOptionPane.YES_OPTION) {
+                writeFile(library);
+                System.exit(0);
+            }
+        }
+
+        @Override
+        public void windowClosed(WindowEvent e) {
+        }
+
+        @Override
+        public void windowIconified(WindowEvent e) {
+        }
+
+        @Override
+        public void windowDeiconified(WindowEvent e) {
+        }
+
+        @Override
+        public void windowActivated(WindowEvent e) {
+        }
+
+        @Override
+        public void windowDeactivated(WindowEvent e) {
         }
     }
 
