@@ -1,10 +1,13 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.*;
+import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Library implements ActionListener {
 
@@ -89,7 +92,12 @@ public class Library implements ActionListener {
     }
 
     public void viewGraph() {
-        JOptionPane.showMessageDialog(x, "Will be Printing Chart Soon :)");
+        //JOptionPane.showMessageDialog(x, "Will be Printing Chart Soon :)");
+        PieChart chart = new PieChart(this.items);
+        JFrame y = new JFrame();
+        y.setVisible(true);
+        y.setSize(400, 400);
+        y.add(chart);
     }
 
     //------------------------------------------------------------------------------------------------------------------------------------------
@@ -348,7 +356,7 @@ public class Library implements ActionListener {
         x = new JFrame("Delete Book");
         x.setVisible(true);
         x.setSize(500, 400);
-        x.setLayout(new GridLayout(2,1));
+        x.setLayout(new GridLayout(2, 1));
         jp = new JPanel();
         jp.setLayout(new FlowLayout());
         model = new DefaultTableModel();
@@ -406,20 +414,89 @@ public class Library implements ActionListener {
     public void viewAllItems() {
         x = new JFrame("All Books");
         x.setVisible(true);
-        x.setSize(400, 400);
-        int rows = this.items.size(), cols = 6;
-        String[][] data = new String[rows][cols];
-        for (int i = 0; i < rows; i++) {
-            data[i][0] = String.valueOf(this.items.get(i).id);
-            data[i][1] = this.items.get(i).title;
-            data[i][2] = this.items.get(i).author;
-            data[i][3] = String.valueOf(this.items.get(i).year);
-            data[i][4] = String.valueOf(this.items.get(i).popularityCount);
-            data[i][5] = String.valueOf(this.items.get(i).cost);
-        }
-        JTable allBooks = new JTable(data, columnNames);
-        JScrollPane sp = new JScrollPane(allBooks);
+        x.setSize(500, 400);
+        x.setLayout(new GridLayout(2, 1));
+        model = new DefaultTableModel();
+        String[] columns = {"ID", "Title", "Author", "Year of Publication", "Popularity Count", "Cost", "Read Item"};
+        model.setColumnIdentifiers(columns);
+        table = new JTable(model);
+        table.getColumnModel().getColumn(table.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
+        table.getColumnModel().getColumn(table.getColumnCount() - 1).setCellEditor(new ButtonEditor());
+        table.addMouseListener(new MouseAdapter() {
+            private static int hoveredRow = -1;
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                hoveredRow = -1;
+                table.repaint();
+            }
+        });
+
+        table.addMouseMotionListener(new MouseMotionListener() {
+            private static int hoveredRow = -1;
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                Point point = e.getPoint();
+                int row = table.rowAtPoint(point);
+
+                if (row != hoveredRow) {
+                    hoveredRow = row;
+                    table.repaint();
+                }
+            }
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                // Not used in this example
+            }
+        });
+        table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            private static int hoveredRow = -1;
+
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                                                           boolean isSelected, boolean hasFocus,
+                                                           int row, int column) {
+                Component component = super.getTableCellRendererComponent(table, value,
+                        isSelected, hasFocus, row, column);
+
+                if (row == hoveredRow) {
+                    component.setBackground(Color.gray);
+                } else {
+                    component.setBackground(table.getBackground());
+                }
+                return component;
+            }
+        });
+        sp = new JScrollPane(table);
         x.add(sp);
+        int rows = this.items.size();
+        for (int i = 0; i < rows; i++) {
+            //JButton b = new JButton("read");
+            Object[] data = {
+                    String.valueOf(this.items.get(i).id),
+                    this.items.get(i).title,
+                    this.items.get(i).author,
+                    String.valueOf(this.items.get(i).year),
+                    String.valueOf(this.items.get(i).popularityCount),
+                    String.valueOf(this.items.get(i).cost),
+                    //createButton()
+            };
+            model.addRow(data);
+            model.setValueAt(createButton(), i, 6);
+        }
+    }
+
+    private static JButton createButton() {
+        JButton button = new JButton("Read");
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Code to to with Button
+            }
+        });
+        return button;
     }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -514,5 +591,49 @@ public class Library implements ActionListener {
             case "Confirm" -> save();
         }
     }
+
     //----------------------------------------------------------------------------------------------------------------------------------------
+    class ButtonRenderer extends JButton implements TableCellRenderer {
+        public ButtonRenderer() {
+            setOpaque(true);
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            return (Component) value;
+        }
+    }
+
+    class ButtonEditor extends AbstractCellEditor implements TableCellEditor {
+        private JButton button;
+        private String originalText;
+
+        public ButtonEditor() {
+            button = new JButton();
+            button.setOpaque(true);
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    fireEditingStopped();
+                    JOptionPane.showMessageDialog(null, "Button Clicked!");
+                }
+            });
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            if (value instanceof JButton) {
+                button = (JButton) value;
+                originalText = button.getText();
+            }
+            return button;
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            // Restore the original text when editing is stopped
+            button.setText(originalText);
+            return button;
+        }
+    }
 }
