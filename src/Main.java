@@ -1,5 +1,9 @@
-public class Main {
+public class Main extends Thread{
+    public void run(){
+        System.out.println("Thread " + this.threadId() + " started!");
+    }
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        Thread t1 = new Main();
+        t1.start();
     }
 }
