@@ -1,0 +1,6 @@
+1, book_title, author_name, 1950, 3, 200
+2, magazine_title, author1_name, author2_name, author3_name., publisher_company, 10, 500
+3, newspaper_title1, publisher_company1, 5, 21-09-2023
+1, book_title1, author_name1, 1951, 8, 210
+2, magazine_title1, author1_name1, author2_name1, author3_name1., publisher_company1, 7, 510
+3, newspaper_title1, publisher_company1, 2, 21-09-2023
