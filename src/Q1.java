@@ -1,3 +1,4 @@
+//Parallel Array Sum:
 //Write a Java program that calculates the sum of elements in an array using multiple threads.
 //Each thread should be responsible for computing the sum of a portion of the array.
 //Combine the partial sums to obtain the total sum.
