@@ -12,6 +12,7 @@ import java.util.Scanner;
 public class Library implements ActionListener {
 
     public List<Book> items;
+    private static int hoveredRow = -1;
     String[] columnNames;
     JFrame x;
     JPanel jp;
@@ -423,7 +424,6 @@ public class Library implements ActionListener {
         table.getColumnModel().getColumn(table.getColumnCount() - 1).setCellRenderer(new ButtonRenderer());
         table.getColumnModel().getColumn(table.getColumnCount() - 1).setCellEditor(new ButtonEditor());
         table.addMouseListener(new MouseAdapter() {
-            private static int hoveredRow = -1;
 
             @Override
             public void mouseExited(MouseEvent e) {
@@ -433,7 +433,6 @@ public class Library implements ActionListener {
         });
 
         table.addMouseMotionListener(new MouseMotionListener() {
-            private static int hoveredRow = -1;
 
             @Override
             public void mouseMoved(MouseEvent e) {
@@ -452,7 +451,6 @@ public class Library implements ActionListener {
             }
         });
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-            private static int hoveredRow = -1;
 
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
